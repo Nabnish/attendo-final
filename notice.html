@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>College Notice Board</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(to right, #ffecd2, #fcb69f);
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .navbar {
+      background: #4a148c;
+    }
+    .navbar-brand, .nav-link {
+      color: white !important;
+      font-weight: bold;
+    }
+    .notice-card {
+      border-radius: 15px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.2);
+      overflow: hidden;
+      transition: transform 0.2s;
+    }
+    .notice-card:hover {
+      transform: scale(1.03);
+    }
+    .notice-img {
+      height: 180px;
+      object-fit: cover;
+      width: 100%;
+    }
+    footer {
+      background: #4a148c;
+      color: white;
+      text-align: center;
+      padding: 15px;
+      margin-top: 50px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">🏫 College Portal</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarNav" aria-controls="navbarNav" 
+              aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Notices</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Events</a></li>
+          <li class="nav-item"><a class="nav-link" href="#">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Notices Section -->
+  <div class="container mt-5">
+    <h2 class="text-center mb-4">📢 Latest College Notices</h2>
+    <div class="row g-4">
+
+      <div class="col-md-4">
+        <div class="card notice-card">
+          <img src="https://images.unsplash.com/photo-1606761568499-6c1b3b401327" class="notice-img" alt="Exam">
+          <div class="card-body">
+            <h5 class="card-title">Semester Exam Schedule</h5>
+            <p class="card-text">Final exam timetable for all departments is published. Please check and prepare accordingly.</p>
+            <a href="#" class="btn btn-primary btn-sm">Read More</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card notice-card">
+          <img src="https://images.unsplash.com/photo-1517520287167-4bbf64a00d66" class="notice-img" alt="Sports">
+          <div class="card-body">
+            <h5 class="card-title">Annual Sports Meet</h5>
+            <p class="card-text">Registrations are open for athletics, cricket, football, and cultural programs. Join now!</p>
+            <a href="#" class="btn btn-success btn-sm">Register</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card notice-card">
+          <img src="https://images.unsplash.com/photo-1496307042754-b4aa456c4a2d" class="notice-img" alt="Seminar">
+          <div class="card-body">
+            <h5 class="card-title">Guest Lecture</h5>
+            <p class="card-text">Dr. A. Sharma will deliver a talk on Artificial Intelligence in Auditorium Hall 3 at 11 AM.</p>
+            <a href="#" class="btn btn-warning btn-sm">Join Event</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>© 2025 College Notice Board | Designed with ❤️</p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

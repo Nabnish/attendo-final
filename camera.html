@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Attendance System</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+    .navbar {
+      background: #0d6efd;
+    }
+    .navbar-brand {
+      color: white !important;
+      font-weight: bold;
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+    video, #previewImg {
+      width: 100%;
+      border-radius: 10px;
+    }
+    #previewImg {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg">
+    <div class="container-fluid">
+      <a class="navbar-brand" href="#">Smart Attendance</a>
+    </div>
+  </nav>
+
+  <div class="container mt-5">
+    <!-- Dashboard -->
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="card p-4 text-center">
+          <h3>Welcome, Student</h3>
+          <p>Click the button below to mark your attendance using face recognition.</p>
+          <button class="btn btn-primary" onclick="openCamera()">📷 Mark Attendance</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reports -->
+    <div class="row mt-5">
+      <div class="col-md-8 offset-md-2">
+        <div class="card p-4">
+          <h4>Attendance Report</h4>
+          <table class="table table-striped mt-3">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Subject</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="reportTable">
+              <!-- Example rows -->
+              <tr>
+                <td>2025-09-16</td>
+                <td>Maths</td>
+                <td><span class="badge bg-success">Present</span></td>
+              </tr>
+              <tr>
+                <td>2025-09-15</td>
+                <td>Physics</td>
+                <td><span class="badge bg-danger">Absent</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Camera Modal -->
+  <div class="modal fade" id="cameraModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content p-3">
+        <h5 class="mb-3">Capture Your Face</h5>
+        <video id="video" autoplay playsinline></video>
+        <canvas id="canvas" style="display:none;"></canvas>
+        <img id="previewImg" alt="Preview">
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+          <div>
+            <button class="btn btn-warning me-2" onclick="captureImage()">Preview</button>
+            <button class="btn btn-success" onclick="submitImage()">Submit</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let video = document.getElementById("video");
+    let canvas = document.getElementById("canvas");
+    let previewImg = document.getElementById("previewImg");
+    let modalEl = document.getElementById('cameraModal');
+    let modal = new bootstrap.Modal(modalEl);
+    let stream;
+    let imageData; // to store captured image
+
+    // Open Camera
+    function openCamera() {
+      modal.show();
+      navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } })
+        .then(s => {
+          stream = s;
+          video.srcObject = stream;
+        })
+        .catch(err => {
+          alert("Camera access denied!");
+        });
+    }
+
+    // Capture Image (Preview)
+    function captureImage() {
+      let context = canvas.getContext('2d');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      context.drawImage(video, 0, 0, canvas.width, canvas.height);
+      imageData = canvas.toDataURL("image/png");
+
+      // Show preview
+      previewImg.src = imageData;
+      previewImg.style.display = "block";
+      video.style.display = "none";
+    }
+
+    // Submit Image to backend
+    function submitImage() {
+      if (!imageData) {
+        alert("Please capture an image first!");
+        return;
+      }
+
+      fetch("/mark_attendance", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ image: imageData })
+      })
+      .then(res => res.json())
+      .then(data => {
+        alert(data.message);
+        modal.hide();
+      })
+      .catch(err => console.error(err));
+    }
+
+    // Stop camera when modal closes
+    modalEl.addEventListener('hidden.bs.modal', () => {
+      if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+        video.srcObject = null;
+      }
+      // Reset view
+      video.style.display = "block";
+      previewImg.style.display = "none";
+      imageData = null;
+    });
+  </script>
+</body>
+</html>
+  
